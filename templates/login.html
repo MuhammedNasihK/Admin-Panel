@@ -111,7 +111,7 @@
         <form method="POST">
             {% csrf_token %}
 
-            <!-- Show login errors -->
+            <!-- Show form errors -->
             {% if form.errors %}
             <div class="error-box">
                 {% for field in form %}
@@ -145,3 +145,4 @@
 
 </body>
 </html>
+

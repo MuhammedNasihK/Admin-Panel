@@ -18,7 +18,6 @@ class Registerform(forms.ModelForm):
         model = User
         fields = ['username','email','password']
    
-
     def clean(self):
         cleaned_data = super().clean()
         p1 = cleaned_data.get('password')
@@ -31,8 +30,8 @@ class Registerform(forms.ModelForm):
 
 
 class Loginform(forms.Form):
-    email = forms.EmailField(widget = forms.EmailInput(attrs={'placeholder':'Email'}))
-    password = forms.CharField(widget = forms.PasswordInput(attrs={'placeholder':'Password'}))
+    username = forms.CharField(widget = forms.TextInput(attrs={'class':'class_name' , 'placeholder':'Email'}))
+    password = forms.CharField(widget = forms.PasswordInput(attrs={'class':'class_name' , 'placeholder':'Password'}))
 
     
         

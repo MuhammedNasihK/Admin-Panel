@@ -19,15 +19,26 @@ def register(request):
         form = Registerform()
     return render(request,'register.html',{'form':form})
 
-def login(request):
+
+def loginv(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        form = Loginform(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            try:
+                get = User.objects.get(username=username)
 
-        exist = User.objects.filter(username=username).exists()
+            except User.DoesNotExist:
+                form.add_error(None,'User not exist')
+                return render(request,'login.html',{'form':form})
 
-        if exist:
-            user_data = User.objects.get(username=username)
+            password = form.cleaned_data['password']
+            if get.check_password(password):
+                return redirect('admin')  
+            else:
+                form.add_error('password',"Wrong password")
+                return render(request,'login.html',{'form':form})
+
 
     form = Loginform()
 
