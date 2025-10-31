@@ -1,143 +1,155 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            background: linear-gradient(to right, #cce5ff, #e6f2ff);
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            height: 100vh;
         }
 
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        .register-container {
             width: 100%;
             max-width: 400px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 30px;
         }
 
-        h2 {
+        .form-box h2 {
             text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 28px;
-        }
-
-        .form-group {
             margin-bottom: 20px;
+            color: #333;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-            font-size: 14px;
+        .input-group {
+            margin-bottom: 18px;
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
+        .class_name {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-            outline: none;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            transition: 0.3s;
         }
 
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            border-color: #667eea;
+        .class_name:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,123,255,0.3);
         }
 
         .btn {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background-color: #007bff;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            color: white;
             font-size: 16px;
-            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 10px;
+            transition: 0.3s;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            background-color: #0056b3;
         }
 
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .login-link {
+        .login-text {
             text-align: center;
-            margin-top: 20px;
-            color: #666;
+            margin-top: 12px;
             font-size: 14px;
         }
 
-        .login-link a {
-            color: #667eea;
+        .login-text a {
+            color: #007bff;
             text-decoration: none;
-            font-weight: 600;
         }
 
-        .login-link a:hover {
+        .login-text a:hover {
             text-decoration: underline;
+        }
+
+        .error-box {
+            background-color: #ffe6e6;
+            color: #b30000;
+            border: 1px solid #ffb3b3;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 16px;
+            font-size: 14px;
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
+
+<div class="register-container">
+    <div class="form-box">
         <h2>Create Account</h2>
-        <form>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Show form errors -->
+            {% if form.errors %}
+            <div class="error-box">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Input fields -->
+            <div class="input-group">
+                {{ form.username }}
             </div>
 
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+            <div class="input-group">
+                {{ form.email }}
             </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+            <div class="input-group">
+                {{ form.password }}
             </div>
 
-            <div class="form-group">
-                <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" name="confirm-password" required>
+            <div class="input-group">
+                {{ form.confirm_password }}
             </div>
 
             <button type="submit" class="btn">Register</button>
 
-            <div class="login-link">
-                Already have an account? <a href="#">Login</a>
-            </div>
+            <p class="login-text">
+                Already have an account? <a href="{% url 'login' %}">Login</a>
+            </p>
         </form>
     </div>
+</div>
+
 </body>
 </html>

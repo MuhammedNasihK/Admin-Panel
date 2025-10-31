@@ -1,10 +1,15 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.db import models
+
 
 
 User = get_user_model()
+
 class Registerform(forms.ModelForm):
+    username = forms.CharField(widget = forms.TextInput(attrs={'class':'class_name','placeholder':'Username'}))
+
+    email = forms.EmailField(widget = forms.EmailInput(attrs={'class':'class_name','placeholder':'Email'}))
+
     password = forms.CharField(widget= forms.PasswordInput(attrs={'class':'class_name','placeholder':'Password'}))
 
     confirm_password = forms.CharField(widget = forms.PasswordInput(attrs = {'class':'class_name','placeholder':'Confirm Password'}))
@@ -12,11 +17,7 @@ class Registerform(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username','email','password']
-
-        widgets = {
-            'username' : forms.TextInput(attrs={'class' : 'class_name','placeholder' : 'Username'}),
-            'email' : forms.EmailInput(attrs={'class' : 'class_name','placeholder': 'Email:'}),
-        }
+   
 
     def clean(self):
         cleaned_data = super().clean()
@@ -24,8 +25,14 @@ class Registerform(forms.ModelForm):
         p2 = cleaned_data.get('confirm_password')
 
         if p1 and p2 and p1 != p2:
-            raise forms.ValidationError('Password do not match')
+            raise forms.ValidationError('Passwords do not match')
         
         return cleaned_data
 
+
+class Loginform(forms.Form):
+    email = forms.EmailField(widget = forms.EmailInput(attrs={'placeholder':'Email'}))
+    password = forms.CharField(widget = forms.PasswordInput(attrs={'placeholder':'Password'}))
+
+    
         
