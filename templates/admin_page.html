@@ -55,7 +55,7 @@
   <div class="container container-card">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h3>Users List</h3>
-      <a href="#" class="btn btn-success">+ Add User</a>
+      <a href="{% url 'add_user' %}" class="btn btn-success">+ Add User</a>
     </div>
 
     <table class="table table-hover">
@@ -69,11 +69,12 @@
         </tr>
       </thead>
       <tbody>
+        {% for i in data %}
         <!-- Example Static Rows -->
         <tr>
-          <td>1</td>
-          <td>John Doe</td>
-          <td>john@example.com</td>
+          <td>{{ i.id }}</td>
+          <td>{{ i.username }}</td>
+          <td>{{ i.email }}</td>
           <td class="text-success fs-5">Active</td>
           <td>
             <a href="#" class="btn btn-sm btn-block me-1">Block</a>
@@ -81,12 +82,8 @@
             <a href="#" class="btn btn-sm btn-delete">Delete</a>
           </td>
         </tr>
-        <tr>
-          <td>2</td>
-          <td>Jane Smith</td>
-          <td>jane@example.com</td>
-          <td class="text-danger fs-5">Blocked</td>
-          <td>
+        {% endfor %}
+       
             <a href="#" class="btn btn-sm btn-block me-1">Unblock</a>
             <a href="#" class="btn btn-sm btn-update me-1">Update</a>
             <a href="#" class="btn btn-sm btn-delete">Delete</a>

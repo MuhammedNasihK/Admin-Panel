@@ -33,5 +33,18 @@ class Loginform(forms.Form):
     username = forms.CharField(widget = forms.TextInput(attrs={'class':'class_name' , 'placeholder':'Email'}))
     password = forms.CharField(widget = forms.PasswordInput(attrs={'class':'class_name' , 'placeholder':'Password'}))
 
+
+class Add_user_form(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username','email','password']
+
+        widgets = {
+            'username' : forms.TextInput(attrs={'placeholder':'Username' , 'class':'class_name'}),
+            'email' : forms.EmailInput(attrs={'placeholder':'Email' , 'class':'class_name'}),
+            'password' : forms.PasswordInput(attrs={'placeholder':'Password','class':'class_name'})
+        }
+
     
+        
         
