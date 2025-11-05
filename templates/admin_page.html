@@ -44,7 +44,9 @@
   <!-- Header -->
   <div class="d-flex justify-content-between p-3 bg-light border-bottom">
     <h1 class="text-primary">Admin Panel</h1>
-    <form action="/logoutadmin" method="POST">
+    <h2>{{ login_user }}</h2>
+    <form action="{% url 'logout' %}" method="POST">
+      {% csrf_token %}
       <button type="submit" class="btn btn-danger">
         🚪 Logout
       </button>
@@ -78,16 +80,12 @@
           <td class="text-success fs-5">Active</td>
           <td>
             <a href="#" class="btn btn-sm btn-block me-1">Block</a>
-            <a href="#" class="btn btn-sm btn-update me-1">Update</a>
-            <a href="#" class="btn btn-sm btn-delete">Delete</a>
+            <a href="{% url 'edit' i.id %}" class="btn btn-sm btn-update me-1">Edit</a>
+            <a href="{% url 'delete' i.id %}" class="btn btn-sm btn-delete">Delete</a>
           </td>
         </tr>
         {% endfor %}
-       
-            <a href="#" class="btn btn-sm btn-block me-1">Unblock</a>
-            <a href="#" class="btn btn-sm btn-update me-1">Update</a>
-            <a href="#" class="btn btn-sm btn-delete">Delete</a>
-          </td>
+        </td>
         </tr>
       </tbody>
     </table>

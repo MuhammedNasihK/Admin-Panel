@@ -6,6 +6,7 @@ from .forms import Registerform,Loginform,Add_user_form
 
 User = get_user_model()
 
+
 def register(request):
     if request.method == 'POST':
         form = Registerform(request.POST)
@@ -21,7 +22,7 @@ def register(request):
     return render(request,'register.html',{'form':form})
 
 
-def loginv(request):
+def login(request):
     if request.method == 'POST':
         form = Loginform(request.POST)
         if form.is_valid():
@@ -36,23 +37,34 @@ def loginv(request):
             password = form.cleaned_data['password']
             if get.check_password(password):
                 request.session['user_id'] = get.id
+                request.session.set_expiry(0)
                 return redirect('admin')  
             else:
                 form.add_error('password',"Wrong password")
                 return render(request,'login.html',{'form':form})
 
-
     form = Loginform()
 
     return render(request,'login.html',{'form':form})
+
+
+
+def logout(request):
+    if 'user_id' not in request.session:
+        return redirect('login')
+       
+    if request.method == 'POST':
+        del request.session['user_id']
+        return redirect('login')
+       
+
 
 def admin(request):
     if 'user_id' not in request.session:
         return redirect('login')
     data = User.objects.all()
-
     dict = {
-        'data' : data
+        'data' : data,
     }
     return render(request,'admin_page.html',dict)
 
@@ -68,8 +80,46 @@ def add_user(request):
             password = form.cleaned_data['password']
             data.set_password(password)
             data.save()
+            return redirect('admin')
             
     form = Add_user_form()
-
-
     return render(request,'add_user.html',{'form':form})
+
+
+
+def edit(request,id):
+    bio = User.objects.get(id=id)
+    
+    form = Add_user_form(instance=bio)
+   
+    if request.method == 'POST':
+        pform = Add_user_form(request.POST)
+        if pform.is_valid():
+            username = pform.cleaned_data['username']
+            email = pform.cleaned_data['email']
+            password = pform.cleaned_data['password']
+            data = User.objects.get(id=id)
+            check = User.objects.filter(username=username).exists()
+            if check:
+                form.add_error(None,'Username already exist')
+                return render(request,'edit.html',{'form':form})
+            
+            elif User.objects.filter(email=email).exists():
+                form.add_error(None,'User with this email exist')
+                return render(request,'edit.html',{'form':form})
+            
+            data.username = username
+            data.email = email
+            data.set_password(password)
+
+            data.save()
+            return redirect('admin')
+            
+    
+    return render(request,'edit.html',{'form':form})
+
+
+def delete(request,id):
+   data = User.objects.get(id=id)
+   data.delete()
+   return redirect('admin')

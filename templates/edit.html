@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User data</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #d9e9ff, #eef6ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .user-container {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        .user-box h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .class_name {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .class_name:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,123,255,0.3);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .error-box {
+            background-color: #ffe6e6;
+            color: #b30000;
+            border: 1px solid #ffb3b3;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .success {
+            background-color: #e6ffe6;
+            color: #006600;
+            border: 1px solid #99ff99;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="user-container">
+        <div class="user-box">
+            <h2>Edit User data</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Error messages -->
+                {% if form.errors %}
+                <div class="error-box">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Input fields -->
+                <div class="input-group">
+                    {{ form.username }}
+                </div>
+
+                <div class="input-group">
+                    {{ form.email }}
+                </div>
+
+                <div class="input-group">
+                    {{ form.password }}
+                </div>
+
+                <button type="submit" class="btn">Update</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
