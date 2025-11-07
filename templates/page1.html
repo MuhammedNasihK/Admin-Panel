@@ -1,0 +1,129 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Welcome — Choose</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1: #cce5ff;
+      --bg2: #e6f2ff;
+      --card: #ffffff;
+      --primary: #007bff;
+      --primary-dark: #0056b3;
+      --text: #1f2937;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:24px;
+    }
+
+    .card{
+      width:100%;
+      max-width:540px;
+      background:var(--card);
+      border-radius:14px;
+      padding:28px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.08);
+      text-align:center;
+    }
+
+    .logo {
+      font-weight:700;
+      color:var(--primary);
+      letter-spacing:0.4px;
+      font-size:24px;
+      margin-bottom:6px;
+    }
+
+    .subtitle {
+      color:#6b7280;
+      margin-bottom:22px;
+      font-size:14px;
+    }
+
+    .btn-row{
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin-top:22px;
+      flex-wrap:wrap;
+    }
+
+    .big-btn{
+      min-width:160px;
+      padding:14px 20px;
+      border-radius:10px;
+      border:0;
+      font-size:16px;
+      cursor:pointer;
+      font-weight:600;
+      transition: transform .12s ease, box-shadow .12s ease;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .big-btn:active{ transform: translateY(1px); }
+
+    .btn-register{
+      background: linear-gradient(180deg,var(--primary),var(--primary-dark));
+      color:white;
+    }
+
+    .btn-login{
+      background: transparent;
+      color:var(--primary);
+      border:2px solid rgba(0,123,255,0.14);
+    }
+
+    .hint {
+      margin-top:14px;
+      color:#6b7280;
+      font-size:13px;
+    }
+
+    @media (max-width:420px){
+      .big-btn{ width:100%; min-width:0; }
+      .btn-row{ gap:12px; flex-direction:column; align-items:stretch; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-labelledby="welcome">
+    <div id="welcome" class="logo">Your App</div>
+    <div class="subtitle">Create a new account or sign in to continue</div>
+
+    <div class="btn-row">
+      
+      <a href="/register/" class="big-btn btn-register" role="button" aria-label="Register">Register</a>
+      <a href="/login/" class="big-btn btn-login" role="button" aria-label="Login">Login</a>
+
+      
+    </div>
+
+    <div class="hint">Tip: You can style these links to open your register/login pages or use them as simple anchors.</div>
+  </div>
+</body>
+</html>

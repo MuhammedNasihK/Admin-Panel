@@ -106,7 +106,7 @@
 
 <div class="register-container">
     <div class="form-box">
-        <h2>Create Account</h2>
+        <h2>Sign up</h2>
 
         <form method="POST">
             {% csrf_token %}
@@ -143,7 +143,7 @@
                 {{ form.confirm_password }}
             </div>
 
-            <button type="submit" class="btn">Register</button>
+            <button type="submit" class="btn">Sign up</button>
 
             <p class="login-text">
                 Already have an account? <a href="{% url 'login' %}">Login</a>

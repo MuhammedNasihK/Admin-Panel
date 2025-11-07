@@ -1,10 +1,12 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import get_user_model
 from .forms import Registerform,Loginform,Add_user_form
+from django.http import HttpResponse
 
 # Create your views here.
 
 User = get_user_model()
+
 
 
 def register(request):
@@ -72,41 +74,48 @@ def admin(request):
 def add_user(request):
     if 'user_id' not in request.session:
         return redirect('login')
+    form = Add_user_form()
     
     if request.method == 'POST':
         form = Add_user_form(request.POST)
         if form.is_valid():
             data = form.save(commit = False)
+            username = form.cleaned_data['username']
             password = form.cleaned_data['password']
+            if User.objects.filter(username=username).exists():
+                form.add_error('username','Username already exist')
+                return render(request,'add_user',{'form':form})
             data.set_password(password)
             data.save()
             return redirect('admin')
             
-    form = Add_user_form()
+    
     return render(request,'add_user.html',{'form':form})
 
 
 
 def edit(request,id):
-    bio = User.objects.get(id=id)
+    old_data = User.objects.get(id=id)
     
-    form = Add_user_form(instance=bio)
+    form = Add_user_form(instance=old_data)
    
     if request.method == 'POST':
-        pform = Add_user_form(request.POST)
-        if pform.is_valid():
-            username = pform.cleaned_data['username']
-            email = pform.cleaned_data['email']
-            password = pform.cleaned_data['password']
+        form = Add_user_form(request.POST,instance=old_data)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
             data = User.objects.get(id=id)
-            check = User.objects.filter(username=username).exists()
+            check = User.objects.filter(username=username).exclude(id=id).exists()
+
             if check:
-                form.add_error(None,'Username already exist')
+                form.add_error('username','Username already exist')
                 return render(request,'edit.html',{'form':form})
             
-            elif User.objects.filter(email=email).exists():
-                form.add_error(None,'User with this email exist')
+            elif User.objects.filter(email=email).exclude(id=id).exists():
+                form.add_error('email','User with this email exist')
                 return render(request,'edit.html',{'form':form})
+                
             
             data.username = username
             data.email = email
