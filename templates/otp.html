@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Verification</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to right, #cce5ff, #e6f2ff);
+    }
+
+    .container {
+      background: white;
+      padding: 30px 35px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .otp-box {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .otp-input {
+      width: 45px;
+      height: 50px;
+      font-size: 20px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .otp-input:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .resend {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .resend a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .resend a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>OTP Verification</h2>
+    <p>Enter the 6-digit code sent to your email</p>
+
+    <form method="POST">
+      <div class="otp-box">
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+      </div>
+
+      <button type="submit" class="btn">Verify OTP</button>
+
+      <div class="resend">
+        Didn’t receive the code? <a href="#">Resend OTP</a>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>

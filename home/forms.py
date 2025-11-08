@@ -47,6 +47,13 @@ class Add_user_form(forms.ModelForm):
             'password' : forms.PasswordInput(attrs={'placeholder':'Password','class':'class_name'})
         }
 
-    
-        
-        
+
+class Edit_user_form(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username','email']
+
+        widgets = {
+            'username' : forms.TextInput(attrs={'placeholder':'Username' , 'class':'class_name'}),
+            'email' : forms.EmailInput(attrs={'placeholder':'Email' , 'class':'class_name'}),
+        }      

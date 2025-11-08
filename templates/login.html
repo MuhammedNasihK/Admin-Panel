@@ -99,6 +99,22 @@
             margin-bottom: 16px;
             font-size: 14px;
         }
+
+        /* ✅ Added only this small class for forgot password link */
+        .forgot-password {
+            text-align: right;
+            margin-top: 8px;
+        }
+
+        .forgot-password a {
+            color: #007bff;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -111,7 +127,6 @@
         <form method="POST">
             {% csrf_token %}
 
-            <!-- Show form errors -->
             {% if form.errors %}
             <div class="error-box">
                 {% for field in form %}
@@ -125,7 +140,6 @@
             </div>
             {% endif %}
 
-            <!-- Input fields -->
             <div class="input-group">
                 {{ form.username }}
             </div>
@@ -136,6 +150,11 @@
 
             <button type="submit" class="btn">Login</button>
 
+            <!-- ✅ Added forgot password link -->
+            <p class="forgot-password">
+                <a href="">Forgot password?</a>
+            </p>
+
             <p class="register-text">
                 Don’t have an account? <a href="{% url 'register' %}">Register</a>
             </p>
@@ -145,4 +164,5 @@
 
 </body>
 </html>
+
 

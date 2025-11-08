@@ -1,15 +1,18 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import get_user_model
-from .forms import Registerform,Loginform,Add_user_form
+from .forms import Registerform,Loginform,Add_user_form,Edit_user_form
 from django.http import HttpResponse
+from django.views.decorators.cache import never_cache
 
 # Create your views here.
 
 User = get_user_model()
 
 
-
+@never_cache
 def register(request):
+    if 'user_id' in request.session:
+        return redirect('admin')
     if request.method == 'POST':
         form = Registerform(request.POST)
 
@@ -24,7 +27,10 @@ def register(request):
     return render(request,'register.html',{'form':form})
 
 
+@never_cache
 def login(request):
+    if 'user_id' in request.session:
+        return redirect('admin')
     if request.method == 'POST':
         form = Loginform(request.POST)
         if form.is_valid():
@@ -101,14 +107,13 @@ def add_user(request):
 def edit(request,id):
     old_data = User.objects.get(id=id)
     
-    form = Add_user_form(instance=old_data)
+    form = Edit_user_form(instance=old_data)
    
     if request.method == 'POST':
-        form = Add_user_form(request.POST,instance=old_data)
+        form = Edit_user_form(request.POST,instance=old_data)
         if form.is_valid():
             username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
+            email = form.cleaned_data['email']           
             data = User.objects.get(id=id)
             check = User.objects.filter(username=username).exclude(id=id).exists()
 
@@ -119,11 +124,9 @@ def edit(request,id):
             elif User.objects.filter(email=email).exclude(id=id).exists():
                 form.add_error('email','User with this email exist')
                 return render(request,'edit.html',{'form':form})
-                
-            
+                           
             data.username = username
             data.email = email
-            data.set_password(password)
 
             data.save()
             return redirect('admin')
