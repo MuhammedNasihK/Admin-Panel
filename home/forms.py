@@ -23,7 +23,11 @@ class Registerform(forms.ModelForm):
         p2 = cleaned_data.get('confirm_password')
         username = cleaned_data['username']
         if len(username) <= 3:
-            raise forms.ValidationError('Username must contain four letters')
+            raise forms.ValidationError('Username must contain four values')
+        elif username.isdigit():
+            raise forms.ValidationError('Username must contain characters')
+        elif len(p1) <= 3:
+            raise forms.ValidationError('password must countain four values')
 
         if p1 and p2 and p1 != p2:
             raise forms.ValidationError('Passwords do not match')
