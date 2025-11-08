@@ -35,7 +35,9 @@ def login(request):
             except User.DoesNotExist:
                 form.add_error(None,'User not exist')
                 return render(request,'login.html',{'form':form})
-
+            if get.is_active == False:
+                form.add_error(None,'User is blocked')
+                return render(request,'login.html',{'form':form})
             password = form.cleaned_data['password']
             if get.check_password(password):
                 request.session['user_id'] = get.id
@@ -65,8 +67,10 @@ def admin(request):
     if 'user_id' not in request.session:
         return redirect('login')
     data = User.objects.all()
+
     dict = {
         'data' : data,
+        'User' : User,
     }
     return render(request,'admin_page.html',dict)
 
@@ -132,3 +136,16 @@ def delete(request,id):
    data = User.objects.get(id=id)
    data.delete()
    return redirect('admin')
+
+
+
+def block(request,id):
+    data = User.objects.get(id=id)
+    if data.is_active == True:
+        data.is_active = False
+    elif data.is_active == False:
+        data.is_active = True
+
+    data.save()
+
+    return redirect('admin')

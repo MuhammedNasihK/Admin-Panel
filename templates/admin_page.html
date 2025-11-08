@@ -77,9 +77,24 @@
           <td>{{ i.id }}</td>
           <td>{{ i.username }}</td>
           <td>{{ i.email }}</td>
-          <td class="text-success fs-5">Active</td>
+
+          <td class="text-success fs-5">
+              {% if i.is_active == True%}
+                Activate
+              {% endif %}
+              {% if i.is_active == False %}
+                Deactivate
+              {% endif %}
+          </td>
           <td>
-            <a href="#" class="btn btn-sm btn-block me-1">Block</a>
+            <a href="{% url 'block' i.id %}" class="btn btn-sm btn-block me-1">
+            {% if i.is_active == True%}
+              Block
+            {% endif %}
+            {% if i.is_active == False %}
+              Unblock
+            {% endif %}
+            </a>
             <a href="{% url 'edit' i.id %}" class="btn btn-sm btn-update me-1">Edit</a>
             <a href="{% url 'delete' i.id %}" class="btn btn-sm btn-delete">Delete</a>
           </td>

@@ -10,4 +10,5 @@ urlpatterns = [
     path('logoutadmin/',views.logout,name='logout'),
     path('edit/<int:id>',views.edit,name='edit'),
     path('dalete/<int:id>',views.delete,name='delete'),
+    path('block/<int:id>',views.block,name='block')
 ]
