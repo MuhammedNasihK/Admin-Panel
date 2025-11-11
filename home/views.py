@@ -1,8 +1,12 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import get_user_model
-from .forms import Registerform,Loginform,Add_user_form,Edit_user_form
+from .forms import Registerform,Loginform,Add_user_form,Edit_user_form,New_password_form
 from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.conf import settings
+import random
 
 # Create your views here.
 
@@ -76,7 +80,6 @@ def admin(request):
 
     dict = {
         'data' : data,
-        'User' : User,
     }
     return render(request,'admin_page.html',dict)
 
@@ -105,6 +108,8 @@ def add_user(request):
 
 
 def edit(request,id):
+    if 'user_id' not in request.session:
+        return redirect('login')
     old_data = User.objects.get(id=id)
     
     form = Edit_user_form(instance=old_data)
@@ -152,3 +157,63 @@ def block(request,id):
     data.save()
 
     return redirect('admin')
+
+
+
+def otp_creation(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if User.objects.filter(email=email).exists():
+            otp = random.randint(100000,999999)
+
+            request.session['otp'] = otp
+            request.session['email'] = email
+
+            send_mail(
+                'Your password reset OTP',
+                f'Your OTP for resetting password is {otp}',
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=True,
+            )
+
+            return redirect('otp')
+        else:
+            messages.error(request,'No user found with this email')
+            return render(request,'forgot.html')
+    return render(request,'forgot.html')
+
+
+def otp_verification(request):
+    if 'email' not in request.session:
+        return redirect('otp_creation')
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        
+        session_otp = request.session.get('otp')
+        print(otp)
+        if int(otp) == session_otp:
+            del request.session['otp']
+            return redirect('new_password')
+        else:
+            messages.error(request,'OTP not correct')
+            return render(request,'otp.html')
+    return render(request,'otp.html')  
+
+
+
+def new_password(request):
+    if 'email' not in request.session:
+        return redirect('otp_creation')
+    form = New_password_form()
+    if request.method == "POST":
+        form = New_password_form(request.POST)
+        if form.is_valid():
+            email = request.session.get('email')
+            data = User.objects.get(email=email)
+            password = form.cleaned_data['password']
+            data.set_password(password)
+            data.save()
+            del request.session['email']
+            return redirect('login')
+    return render(request,'new_password.html',{'form':form})

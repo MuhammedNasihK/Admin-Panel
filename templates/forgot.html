@@ -99,6 +99,9 @@
     <h2>Forgot Password</h2>
     <form method="POST">
         {% csrf_token %}
+        {% for i in messages %}
+          <p style="color:red">{{i}}</p>
+        {% endfor %}
       <div class="input-group">
         
         <input type="email" id="email" name="email" placeholder="Enter your registered email" required>

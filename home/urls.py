@@ -10,5 +10,9 @@ urlpatterns = [
     path('logoutadmin/',views.logout,name='logout'),
     path('edit/<int:id>',views.edit,name='edit'),
     path('dalete/<int:id>',views.delete,name='delete'),
-    path('block/<int:id>',views.block,name='block')
+    path('block/<int:id>',views.block,name='block'),
+    path('forgot/',views.otp_creation,name='otp_creation'),
+    path('otp/',views.otp_verification,name='otp'),
+    path('new_password/',views.new_password,name='new_password'),
+
 ]

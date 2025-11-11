@@ -1,129 +1,122 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Welcome — Choose</title>
-
-  <!-- Google font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Verification</title>
   <style>
-    :root{
-      --bg1: #cce5ff;
-      --bg2: #e6f2ff;
-      --card: #ffffff;
-      --primary: #007bff;
-      --primary-dark: #0056b3;
-      --text: #1f2937;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: linear-gradient(135deg, var(--bg1), var(--bg2));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      padding:24px;
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to right, #cce5ff, #e6f2ff);
     }
 
-    .card{
-      width:100%;
-      max-width:540px;
-      background:var(--card);
-      border-radius:14px;
-      padding:28px;
-      box-shadow: 0 8px 30px rgba(2,6,23,0.08);
-      text-align:center;
+    .container {
+      background: white;
+      padding: 30px 35px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
     }
 
-    .logo {
-      font-weight:700;
-      color:var(--primary);
-      letter-spacing:0.4px;
-      font-size:24px;
-      margin-bottom:6px;
+    h2 {
+      margin-bottom: 10px;
+      color: #333;
     }
 
-    .subtitle {
-      color:#6b7280;
-      margin-bottom:22px;
-      font-size:14px;
+    p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 25px;
     }
 
-    .btn-row{
-      display:flex;
-      gap:16px;
-      justify-content:center;
-      margin-top:22px;
-      flex-wrap:wrap;
+    .otp-box {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 25px;
     }
 
-    .big-btn{
-      min-width:160px;
-      padding:14px 20px;
-      border-radius:10px;
-      border:0;
-      font-size:16px;
-      cursor:pointer;
-      font-weight:600;
-      transition: transform .12s ease, box-shadow .12s ease;
-      box-shadow: 0 6px 18px rgba(2,6,23,0.06);
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
+    .otp-input {
+      width: 45px;
+      height: 50px;
+      font-size: 20px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: 0.3s;
     }
 
-    .big-btn:active{ transform: translateY(1px); }
-
-    .btn-register{
-      background: linear-gradient(180deg,var(--primary),var(--primary-dark));
-      color:white;
+    .otp-input:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
     }
 
-    .btn-login{
-      background: transparent;
-      color:var(--primary);
-      border:2px solid rgba(0,123,255,0.14);
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
     }
 
-    .hint {
-      margin-top:14px;
-      color:#6b7280;
-      font-size:13px;
+    .btn:hover {
+      background-color: #0056b3;
     }
 
-    @media (max-width:420px){
-      .big-btn{ width:100%; min-width:0; }
-      .btn-row{ gap:12px; flex-direction:column; align-items:stretch; }
+    .resend {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .resend a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .resend a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="card" role="main" aria-labelledby="welcome">
-    <div id="welcome" class="logo">Your App</div>
-    <div class="subtitle">Create a new account or sign in to continue</div>
 
-    <div class="btn-row">
-      
-      <a href="/register/" class="big-btn btn-register" role="button" aria-label="Register">Register</a>
-      <a href="/login/" class="big-btn btn-login" role="button" aria-label="Login">Login</a>
+  <div class="container">
+    <h2>OTP Verification</h2>
+    <p>Enter the 6-digit code sent to your email</p>
 
-      
-    </div>
+    <form method="POST">
+      <div class="otp-box">
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+        <input type="text" maxlength="1" class="otp-input" required>
+      </div>
 
-    <div class="hint">Tip: You can style these links to open your register/login pages or use them as simple anchors.</div>
+      <button type="submit" class="btn">Verify OTP</button>
+
+      <div class="resend">
+        Didn’t receive the code? <a href="#">Resend OTP</a>
+      </div>
+    </form>
   </div>
+
 </body>
 </html>
