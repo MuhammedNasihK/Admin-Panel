@@ -34,7 +34,7 @@ def register(request):
 @never_cache
 def login(request):
     if 'user_id' in request.session:
-        return redirect('admin')
+        return redirect('home')
     if request.method == 'POST':
         form = Loginform(request.POST)
         if form.is_valid():
@@ -52,7 +52,7 @@ def login(request):
             if get.check_password(password):
                 request.session['user_id'] = get.id
                 request.session.set_expiry(0)
-                return redirect('admin')  
+                return redirect('home')  
             else:
                 form.add_error('password',"Wrong password")
                 return render(request,'login.html',{'form':form})
@@ -63,19 +63,67 @@ def login(request):
 
 
 
+
+@never_cache
+def admin_login(request):
+    if 'admin_id' in request.session:
+        return redirect('admin')
+    form = Loginform()
+    if request.method == "POST":
+        form = Loginform(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            try:
+                data = User.objects.get(username=username)
+            except User.DoesNotExist:
+                form.add_error('username','This user is not superuser')
+                return render(request,'admin_login.html',{'form':form})
+            if data.is_superuser == True:
+                password = form.cleaned_data['password']
+                if data.check_password(password):
+                    request.session['admin_id'] = data.id
+                    request.session.set_expiry(0)
+                    return redirect('admin')
+                else:
+                    form.add_error('password','Incorrect password')
+                    return render(request,'admin_login.html',{'form':form})
+            else:
+                form.add_error(None,'This user is not superuser')
+                return render(request,'admin_login.html',{'form':form})
+            
+    return render(request,'admin_login.html',{'form':form})
+
+
+
 def logout(request):
+    if 'admin_id' not in request.session:
+        return redirect('admin_login')
+       
+    if request.method == 'POST':
+        del request.session['admin_id']
+        return redirect('admin_login')
+    
+
+
+def home_logout(request):
     if 'user_id' not in request.session:
         return redirect('login')
-       
     if request.method == 'POST':
         del request.session['user_id']
         return redirect('login')
+    
+
+@never_cache
+def home_page(request):
+    if 'user_id' not in request.session:
+        return redirect('login')
+    return render(request,'home.html')
        
 
 
 def admin(request):
-    if 'user_id' not in request.session:
-        return redirect('login')
+    if 'admin_id' not in request.session:
+        return redirect('admin_login')
     data = User.objects.all()
 
     dict = {
@@ -85,7 +133,7 @@ def admin(request):
 
 
 def add_user(request):
-    if 'user_id' not in request.session:
+    if 'admin_id' not in request.session:
         return redirect('login')
     form = Add_user_form()
     
@@ -108,7 +156,7 @@ def add_user(request):
 
 
 def edit(request,id):
-    if 'user_id' not in request.session:
+    if 'admin_id' not in request.session:
         return redirect('login')
     old_data = User.objects.get(id=id)
     
